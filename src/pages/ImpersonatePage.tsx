@@ -4,7 +4,7 @@ import { setAuthSession } from "@/services/api";
 import usePageTitle from "@/hooks/usePageTitle";
 
 export default function ImpersonatePage() {
-  usePageTitle("AbheePay | Impersonation");
+  usePageTitle("GauryaTech | Impersonation");
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();

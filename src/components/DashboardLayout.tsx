@@ -1,11 +1,12 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { LogOut, Menu, Search, User } from "lucide-react";
+import { useState } from "react";
+
 import DashboardSidebar from "@/components/DashboardSidebar";
-import { Bell, Search, User, LogOut, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import NotificationBell from "@/components/NotificationBell";
+import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
 import usePageTitle from "@/hooks/usePageTitle";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -22,7 +23,6 @@ export default function DashboardLayout() {
   const location = useLocation();
 
   const dashTitle = (() => {
-    // /dashboard/<module>
     const parts = location.pathname.split("/").filter(Boolean);
     const moduleKey = parts[1] || "";
     if (!moduleKey) return "Dashboard";
@@ -30,63 +30,74 @@ export default function DashboardLayout() {
     return `Dashboard - ${pretty}`;
   })();
 
-  usePageTitle(`AbheePay | ${dashTitle}`);
+  usePageTitle(`GauryaTech | ${dashTitle}`);
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Desktop sidebar — hidden on mobile */}
-      <div className="hidden lg:block">
-        <DashboardSidebar />
-      </div>
+    <div className="min-h-screen bg-background">
+      <div className="fixed inset-0 -z-10 bg-gradient-hero" />
+      <div className="fixed inset-0 -z-10 bg-grid opacity-30" />
+      <div className="fixed right-[-8rem] top-[-6rem] -z-10 h-[22rem] w-[22rem] rounded-full bg-primary/10 blur-3xl" />
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 lg:h-16 border-b border-border flex items-center justify-between px-3 sm:px-6 shrink-0 bg-card/50">
-          {/* Left: hamburger + search */}
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            {/* Mobile hamburger */}
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden shrink-0">
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-[270px]">
-                <DashboardSidebar onNavigate={() => setMobileOpen(false)} />
-              </SheetContent>
-            </Sheet>
+      <div className="mx-auto flex min-h-screen max-w-[1700px] gap-3 p-2 sm:p-3 lg:gap-4 lg:p-4">
+        <div className="hidden lg:block">
+          <DashboardSidebar />
+        </div>
 
-            <div className="hidden sm:flex items-center gap-3 flex-1 max-w-md">
-              <Search className="w-4 h-4 text-muted-foreground shrink-0" />
-              <input
-                type="text"
-                placeholder="Search transactions, users..."
-                autoComplete="off"
-                className="bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none flex-1 min-w-0"
-              />
-            </div>
-          </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-4">
+          <header className="surface-panel flex min-h-[5rem] items-center justify-between rounded-[1.5rem] px-3 py-3 sm:min-h-[5.5rem] sm:rounded-[2rem] sm:px-6">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-2xl lg:hidden">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[min(290px,100vw-12px)] border-r-0 bg-transparent p-0 shadow-none">
+                  <DashboardSidebar onNavigate={() => setMobileOpen(false)} />
+                </SheetContent>
+              </Sheet>
 
-          {/* Right: bell + profile + logout */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <NotificationBell />
-            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-border">
-              <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center shrink-0">
-                <User className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <div className="hidden md:block">
-                <div className="text-sm font-medium text-foreground truncate max-w-[120px]">{profile?.full_name || "User"}</div>
-                <div className="text-xs text-muted-foreground">{role ? ROLE_LABELS[role] : "Loading..."}</div>
+              <div className="min-w-0">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px] sm:tracking-[0.22em]">Workspace</div>
+                <h1 className="truncate font-heading text-xl font-black tracking-tight text-foreground sm:text-3xl">{dashTitle}</h1>
               </div>
             </div>
-            <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
-        </header>
 
-        <main className="flex-1 p-3 sm:p-4 lg:p-6 overflow-auto">
-          <Outlet />
-        </main>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="hidden items-center gap-3 rounded-full border border-border bg-background/70 px-4 py-3 sm:flex">
+                <Search className="h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search users, transactions, tickets..."
+                  autoComplete="off"
+                  className="w-56 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground lg:w-72"
+                />
+              </div>
+
+              <NotificationBell />
+
+              <div className="hidden items-center gap-3 rounded-full border border-border bg-background/70 px-3 py-2 md:flex">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-primary text-primary-foreground">
+                  <User className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="max-w-[11rem] truncate text-sm font-semibold text-foreground">{profile?.full_name || "User"}</div>
+                  <div className="text-xs text-muted-foreground">{role ? ROLE_LABELS[role] : "Loading..."}</div>
+                </div>
+              </div>
+
+              <Button variant="ghost" size="icon" onClick={signOut} title="Sign out" className="rounded-2xl">
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          </header>
+
+          <main className="min-h-0 flex-1 overflow-auto">
+            <div className="surface-panel min-h-full rounded-[1.5rem] p-3 sm:rounded-[2rem] sm:p-5 lg:p-6">
+              <Outlet />
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );

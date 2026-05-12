@@ -1,21 +1,18 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import BrandMark from "@/components/BrandMark";
 import usePageTitle from "@/hooks/usePageTitle";
 import { PRIVACY_POLICY_GRIEVANCE, PRIVACY_POLICY_SECTIONS } from "@/data/privacyPolicy";
 
 export default function PrivacyPolicyPage() {
-  usePageTitle("AbheePay | Privacy Policy");
+  usePageTitle("GauryaTech | Privacy Policy");
 
   return (
     <div className="min-h-screen bg-gradient-hero">
       <div className="container mx-auto px-4 pt-28 pb-16">
         <div className="flex items-center justify-between gap-4">
           <Link to="/" className="inline-flex items-center">
-            <img
-              src="https://pos.abheepay.com/assets/FORMAT-PNG-Lj3U1uY2.png"
-              alt="ABHEEPAY"
-              className="h-12 w-auto"
-            />
+            <BrandMark subtitle="Privacy & Compliance" />
           </Link>
           <div className="flex items-center gap-3">
             <Link to="/services">
@@ -32,7 +29,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy
           </h1>
           <p className="text-muted-foreground mt-3">
-            This page describes how AbheePay collects, uses, shares, and protects personal information.
+            This page describes how GauryaTech collects, uses, shares, and protects personal information.
           </p>
 
           <div className="mt-8 rounded-2xl border border-border bg-gradient-card p-8 sm:p-10 shadow-elevated">

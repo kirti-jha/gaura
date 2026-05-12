@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import BrandMark from "@/components/BrandMark";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Zap, ShieldCheck } from "lucide-react";
@@ -9,7 +10,7 @@ import { apiFetch } from "@/services/api";
 import usePageTitle from "@/hooks/usePageTitle";
 
 export default function BootstrapAdminPage() {
-  usePageTitle("AbheePay | Bootstrap Admin");
+  usePageTitle("GauryaTech | Bootstrap Admin");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,10 +44,7 @@ export default function BootstrapAdminPage() {
       <div className="w-full max-w-md relative">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
-              <Zap className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="font-heading text-2xl font-bold text-foreground">Abheepay</span>
+            <BrandMark subtitle="Admin Bootstrap" />
           </Link>
           <p className="text-muted-foreground text-sm">One-time setup: Create the first admin account</p>
         </div>
@@ -62,7 +60,7 @@ export default function BootstrapAdminPage() {
           </div>
           <div className="space-y-2">
             <Label>Email</Label>
-            <Input type="email" placeholder="admin@abheepay.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input type="email" placeholder="admin@gauryatech.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div className="space-y-2">
             <Label>Password</Label>

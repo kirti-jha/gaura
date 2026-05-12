@@ -1,41 +1,49 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight, CheckCircle2, ChevronRight, Layers, Link2, Shield, Sparkles, Users, Wallet, Zap } from "lucide-react";
+
+import BrandMark from "@/components/BrandMark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MARKETING_SERVICES } from "@/data/services";
 import usePageTitle from "@/hooks/usePageTitle";
 import { apiFetch } from "@/services/api";
-import {
-  Zap,
-  Shield,
-  Users,
-  ArrowRight,
-  ChevronRight,
-  CheckCircle2,
-  Link2,
-  Layers,
-} from "lucide-react";
-
-
-const features = [
-  "Multi-level distribution hierarchy",
-  "Real-time dual wallet system",
-  "Automated KYC verification",
-  "Role-based access control",
-  "Live transaction monitoring",
-  "Instant fund settlements",
-];
 
 const stats = [
-  { value: "Rs 500Cr+", label: "Monthly Volume" },
-  { value: "50K+", label: "Active Retailers" },
-  { value: "99.9%", label: "Uptime SLA" },
-  { value: "<2s", label: "Avg Settlement" },
+  { value: "50K+", label: "Retailers activated" },
+  { value: "Rs 500Cr+", label: "Monthly transaction volume" },
+  { value: "99.9%", label: "Platform uptime" },
+  { value: "< 2 sec", label: "Average service response" },
+];
+
+const valuePillars = [
+  {
+    title: "Distribution-first",
+    text: "Built for admins, distributors, and retailers with clear controls and downline visibility.",
+    icon: Layers,
+  },
+  {
+    title: "Fast money movement",
+    text: "Wallets, settlements, payouts, and service execution are designed to keep operations moving.",
+    icon: Wallet,
+  },
+  {
+    title: "Compliance-ready",
+    text: "KYC workflows, role permissions, and audit-friendly operations are part of the core product.",
+    icon: Shield,
+  },
+];
+
+const proofPoints = [
+  "AEPS, BBPS, remittance, recharge, and payout in one stack",
+  "Admin controls for services, permissions, and commissions",
+  "Retailer-ready interface with simple onboarding and support",
+  "Designed for scale across large partner networks",
 ];
 
 export default function LandingPage() {
-  usePageTitle("AbheePay | Home");
+  usePageTitle("GauryaTech | Home");
 
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -62,7 +70,7 @@ export default function LandingPage() {
           message: contactMessage,
         }),
       });
-      setContactSuccess("Thanks! Your query has been sent to sales@abheepay.com.");
+      setContactSuccess("Thanks! Your query has been sent to sales@gauryatech.com.");
       setContactName("");
       setContactEmail("");
       setContactMobile("");
@@ -75,345 +83,351 @@ export default function LandingPage() {
   }
 
   return (
-    <div id="top" className="min-h-screen bg-background">
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
+    <div id="top" className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <div className="fixed inset-0 -z-10 bg-gradient-hero" />
+      <div className="fixed inset-0 -z-10 bg-grid opacity-40" />
+      <div className="fixed left-[-12%] top-[-8%] -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
+      <div className="fixed bottom-[-14%] right-[-10%] -z-10 h-[24rem] w-[24rem] rounded-full bg-accent/70 blur-3xl" />
+
+      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-xl">
+        <div className="container mx-auto flex h-16 items-center justify-between gap-3 px-4 sm:h-20">
           <Link to="/" className="flex items-center">
-            <img
-              src="https://pos.abheepay.com/assets/FORMAT-PNG-Lj3U1uY2.png"
-              alt="ABHEEPAY"
-              className="h-12 w-auto"
-            />
+            <BrandMark subtitle="Fintech Infrastructure" />
           </Link>
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#stats" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About Us</a>
-            <a href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
-            <Link to="/blogs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blogs</Link>
-            <a href="#contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact Us</a>
+
+          <div className="hidden items-center gap-8 md:flex">
+            <a href="#platform" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Platform</a>
+            <a href="#services" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Services</a>
+            <a href="#contact" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Contact</a>
+            <Link to="/blogs" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Blogs</Link>
           </div>
-          <div className="flex items-center gap-3">
+
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <Link to="/login">
-              <Button variant="hero-outline" size="sm">Login</Button>
+              <Button variant="hero-outline" size="sm" className="rounded-full px-3 sm:px-5">
+                Login
+              </Button>
             </Link>
-            <Button asChild variant="hero" size="sm">
-              <a href="#contact">Get Started</a>
+            <Button asChild variant="hero" size="sm" className="rounded-full px-3 sm:px-5">
+              <a href="#contact">Talk to Sales</a>
             </Button>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-hero">
-        <div className="absolute inset-0 bg-gradient-glow" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm mb-8">
-              <Zap className="w-3.5 h-3.5" />
-              India's Next-Gen B2B FinTech Platform
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 text-foreground">
-              Power Your Business with{" "}
-              <span className="text-gradient-primary">Instant Financial</span>{" "}
-              Services
-            </h1>
-            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-              AEPS, BBPS, Payouts - everything your distribution network needs.
-              Real-time settlements. Enterprise-grade security. Zero downtime.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/login">
-                <Button variant="hero" size="lg" className="text-base px-8">
-                  Start Earning Today
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-              <a href="#services">
-                <Button variant="hero-outline" size="lg" className="text-base px-8">
-                  Explore Services
-                </Button>
-              </a>
-            </div>
-          </div>
-
-          {/* Stats bar */}
-          <div id="stats" className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {stats.map((s) => (
-              <div key={s.label} className="text-center p-6 rounded-xl bg-card/50 border border-border">
-                <div className="text-2xl sm:text-3xl font-heading font-bold text-gradient-primary">{s.value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{s.label}</div>
+      <main>
+        <section className="container mx-auto px-4 pb-14 pt-14 sm:pt-20">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="max-w-3xl">
+              <div className="mb-6 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-white/70 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary shadow-card sm:text-xs sm:tracking-[0.22em]">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span className="truncate">Built For Bharat-Scale Service Networks</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Services */}
-      <section id="services" className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-foreground mb-4">
-              Complete Suite of <span className="text-gradient-primary">Financial Services</span>
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Everything your network needs to serve millions of customers across India.
-            </p>
-            <div className="mt-6">
-              <Link to="/services" className="inline-flex items-center text-sm font-medium text-primary hover:underline">
-                View all services <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
+              <h1 className="max-w-4xl font-heading text-4xl font-black leading-[0.95] tracking-[-0.04em] text-foreground sm:text-6xl lg:text-7xl">
+                The control room for{" "}
+                <span className="text-gradient-primary">modern fintech distribution.</span>
+              </h1>
+
+              <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-xl sm:leading-8">
+                GauryaTech unifies service delivery, partner operations, wallets, and compliance into a sharper,
+                faster interface for admins and retailers alike.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link to="/login">
+                  <Button variant="hero" size="lg" className="h-12 rounded-full px-6 text-sm sm:h-14 sm:px-8 sm:text-base">
+                    Open Dashboard
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <a href="#services">
+                  <Button variant="hero-outline" size="lg" className="h-12 rounded-full px-6 text-sm sm:h-14 sm:px-8 sm:text-base">
+                    Explore Services
+                  </Button>
+                </a>
+              </div>
+
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="surface-panel ring-panel rounded-[1.75rem] px-5 py-6">
+                    <div className="font-heading text-3xl font-black tracking-tight text-foreground">{stat.value}</div>
+                    <div className="mt-2 text-sm leading-6 text-muted-foreground">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:pt-3">
+              <div className="surface-strong rounded-[1.5rem] p-5 ring-panel sm:rounded-[2rem] sm:p-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">Live Snapshot</div>
+                    <div className="mt-2 font-heading text-2xl font-black tracking-tight sm:text-3xl">Admin Operations</div>
+                  </div>
+                  <div className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+                    Real-time
+                  </div>
+                </div>
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-[1.5rem] border border-white/12 bg-white/10 p-5">
+                    <div className="text-sm text-white/70">Wallet movement</div>
+                    <div className="mt-3 font-heading text-3xl font-black sm:text-4xl">Rs 2.4Cr</div>
+                    <div className="mt-2 text-sm text-emerald-200">+18% this week</div>
+                  </div>
+                  <div className="rounded-[1.5rem] border border-white/12 bg-white/10 p-5">
+                    <div className="text-sm text-white/70">Active services</div>
+                    <div className="mt-3 font-heading text-3xl font-black sm:text-4xl">18</div>
+                    <div className="mt-2 text-sm text-cyan-100">Across payments, banking, and utilities</div>
+                  </div>
+                </div>
+
+                <div className="mt-5 rounded-[1.5rem] border border-white/12 bg-slate-950/20 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-sm font-semibold text-white">Operator confidence</div>
+                      <div className="text-sm text-white/70">Clear actions for approval, transfers, and support</div>
+                    </div>
+                    <Users className="h-9 w-9 text-white/90" />
+                  </div>
+                  <div className="mt-5 space-y-3">
+                    {proofPoints.map((item) => (
+                      <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/8 px-4 py-3 text-sm text-white/90">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {MARKETING_SERVICES.map((svc) => (
+        </section>
+
+        <section id="platform" className="container mx-auto px-4 py-10">
+          <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="surface-panel rounded-[2rem] p-7">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Platform Edge</div>
+              <h2 className="mt-4 font-heading text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+                A calmer interface for complicated operations.
+              </h2>
+              <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">
+                We redesigned the experience around faster scanning, stronger separation, and clearer action states so
+                teams can move money and manage people without fighting the UI.
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {valuePillars.map((pillar) => (
+                <div key={pillar.title} className="surface-panel rounded-[2rem] p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <pillar.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-5 font-heading text-xl font-bold text-foreground">{pillar.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{pillar.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="services" className="container mx-auto px-4 py-12">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Service Stack</div>
+              <h2 className="mt-3 font-heading text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+                One surface, many business lines.
+              </h2>
+            </div>
+            <Link to="/services" className="inline-flex items-center text-sm font-semibold text-primary hover:underline">
+              View full catalogue <ChevronRight className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {MARKETING_SERVICES.map((svc, index) => (
               <Link
                 key={svc.key}
                 to={`/services/${svc.key}`}
-                className="group p-6 rounded-xl bg-gradient-card border border-border hover:border-primary/40 transition-all duration-300 hover:shadow-glow"
+                className={`group surface-panel rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${
+                  index % 3 === 0 ? "xl:translate-y-6" : ""
+                }`}
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <svc.icon className="w-6 h-6 text-primary" />
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-primary/10 text-primary">
+                    <svc.icon className="h-7 w-7" />
+                  </div>
+                  <span className="rounded-full bg-secondary px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {svc.key.replace(/[-_]/g, " ")}
+                  </span>
                 </div>
-                <h3 className="text-lg font-heading font-semibold text-foreground mb-2">{svc.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{svc.description}</p>
-                <div className="mt-4 flex items-center text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  Learn more <ChevronRight className="w-4 h-4 ml-1" />
+                <h3 className="mt-10 font-heading text-2xl font-bold tracking-tight text-foreground">{svc.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{svc.description}</p>
+                <div className="mt-8 inline-flex items-center text-sm font-semibold text-primary">
+                  Explore service <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Features */}
-      <section id="features" className="py-24 bg-gradient-hero">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
-            <div>
-              <h2 className="text-3xl sm:text-4xl font-heading font-bold text-foreground mb-6">
-                Built for <span className="text-gradient-primary">Scale & Security</span>
+        <section className="container mx-auto px-4 py-14">
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="surface-panel rounded-[1.5rem] p-6 sm:rounded-[2rem] sm:p-8">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Security + Scale</div>
+              <h2 className="mt-4 font-heading text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+                Built for growth without sacrificing controls.
               </h2>
-              <p className="text-muted-foreground mb-8">
-                Enterprise-grade infrastructure with multi-level access control, real-time monitoring, and automated compliance - designed for India's largest distribution networks.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {features.map((f) => (
-                  <div key={f} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
-                    <span className="text-sm text-foreground">{f}</span>
-                  </div>
-                ))}
-              </div>
-              <Link to="/login" className="inline-block mt-8">
-                <Button variant="hero" size="lg">
-                  Access Dashboard
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="rounded-2xl bg-gradient-card border border-border p-8 shadow-elevated">
-                <div className="flex items-center gap-3 mb-6">
-                  <Shield className="w-8 h-8 text-primary" />
-                  <div>
-                    <div className="font-heading font-semibold text-foreground">Security First</div>
-                    <div className="text-sm text-muted-foreground">JWT + 2FA + RBAC</div>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  {["KYC Engine with Aadhaar & PAN verification", "Role-based multi-tier hierarchy", "Encrypted wallets with audit trail", "Real-time fraud detection"].map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-sm text-secondary-foreground bg-secondary/50 rounded-lg px-4 py-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-primary/10 blur-2xl animate-pulse-glow" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center p-12 rounded-2xl border border-primary/20 bg-gradient-card relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-glow opacity-50" />
-            <div className="relative z-10">
-              <Users className="w-12 h-12 text-primary mx-auto mb-6" />
-              <h2 className="text-3xl font-heading font-bold text-foreground mb-4">
-                Ready to Scale Your Business?
-              </h2>
-              <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                Join thousands of distributors and retailers already using Abheepay to power their financial services network.
-              </p>
-              <Button asChild variant="hero" size="lg" className="text-base px-10">
-                <a href="#contact">
-                  Get Started Now
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="py-20 bg-gradient-hero scroll-mt-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="max-w-2xl">
-              <h2 className="text-3xl sm:text-4xl font-heading font-bold text-foreground">
-                Contact <span className="text-gradient-primary">Us</span>
-              </h2>
-              <p className="text-muted-foreground mt-3">
-                Reach out for onboarding, pricing, and integration support.
-              </p>
-            </div>
-
-            <div className="mt-10 grid gap-6 lg:grid-cols-2 items-start">
-              <div className="rounded-2xl border border-border bg-gradient-card p-6 shadow-elevated">
-                <div className="text-sm text-muted-foreground">Call Us</div>
-                <a className="text-foreground font-medium mt-1 inline-block hover:underline" href="tel:+918860037218">
-                  +91 88600 37218
-                </a>
-                <div className="h-px bg-border my-5" />
-                <div className="text-sm text-muted-foreground">Email Us</div>
-                <a className="text-foreground font-medium mt-1 inline-block hover:underline" href="mailto:care@abheepay.in">
-                  care@abheepay.in
-                </a>
-                <div className="h-px bg-border my-5" />
-                <div className="text-sm text-muted-foreground">Visit Us</div>
-                <div className="text-foreground font-medium mt-1 leading-relaxed">
-                  2nd Floor, Plot No - 3, KH. NO. 33/6<br />
-                  AMBERHAI, SECTOR-19, DWARKA,<br />
-                  NEW DELHI - 110043
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-border bg-gradient-card p-6 shadow-elevated">
-                <div className="text-sm text-muted-foreground">Send a query</div>
-                <form onSubmit={submitContact} className="mt-4 space-y-3">
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <Input
-                      value={contactName}
-                      onChange={(e) => setContactName(e.target.value)}
-                      placeholder="Name"
-                      required
-                    />
-                    <Input
-                      value={contactMobile}
-                      onChange={(e) => setContactMobile(e.target.value)}
-                      placeholder="Mobile"
-                      inputMode="tel"
-                      required
-                    />
-                  </div>
-                  <Input
-                    value={contactEmail}
-                    onChange={(e) => setContactEmail(e.target.value)}
-                    placeholder="Email"
-                    type="email"
-                    required
-                  />
-                  <Textarea
-                    value={contactMessage}
-                    onChange={(e) => setContactMessage(e.target.value)}
-                    placeholder="Message / Query"
-                    required
-                    rows={5}
-                  />
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                    <Button type="submit" variant="hero" size="sm" disabled={contactSending}>
-                      {contactSending ? "Sending..." : "Send"}
-                    </Button>
-                    <div className="text-xs text-muted-foreground">Sent to sales@abheepay.com</div>
-                  </div>
-                  {contactError ? <div className="text-xs text-red-500">{contactError}</div> : null}
-                  {contactSuccess ? <div className="text-xs text-emerald-600">{contactSuccess}</div> : null}
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-100 font-bold">
-        <div className="container mx-auto px-4 py-16">
-          <div className="grid gap-10 lg:grid-cols-3 items-start">
-            <div>
-              <div className="flex items-center gap-3">
-                <img
-                  src="https://pos.abheepay.com/assets/FORMAT-PNG-Lj3U1uY2.png"
-                  alt="ABHEEPAY"
-                  className="h-12 w-auto"
-                />
-              </div>
-              <p className="mt-5 text-sm text-slate-300 leading-relaxed max-w-sm">
-                AbheePay delivers secure fintech, payments, and digital financial solutions.
-              </p>
-              <Link to="/about" className="mt-4 inline-flex items-center text-sm font-medium text-teal-300 hover:text-teal-200">
-                Read more <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <Link2 className="w-5 h-5 text-teal-300" />
-                <h3 className="text-2xl font-heading font-bold">Quick link</h3>
-              </div>
-              <div className="mt-5 border-t border-slate-700/70">
-                <a
-                  href="#top"
-                  className="flex items-center justify-between gap-3 py-3 border-b border-slate-700/70 text-slate-200 hover:text-white transition-colors"
-                >
-                  <span className="text-sm">Home</span>
-                  <ChevronRight className="w-4 h-4 text-slate-500" />
-                </a>
+              <div className="mt-7 grid gap-4 sm:grid-cols-2">
                 {[
-                  { label: "Refund Policy", to: "/refund-policy" },
-                  { label: "Privacy Policy", to: "/privacy-policy" },
-                  { label: "Terms & Conditions", to: "/terms" },
-                ].map((l) => (
-                  <Link
-                    key={l.label}
-                    to={l.to}
-                    className="flex items-center justify-between gap-3 py-3 border-b border-slate-700/70 text-slate-200 hover:text-white transition-colors"
-                  >
-                    <span className="text-sm">{l.label}</span>
-                    <ChevronRight className="w-4 h-4 text-slate-500" />
-                  </Link>
+                  "Role-based access and downline visibility",
+                  "KYC-ready profile and document flows",
+                  "Wallet operations with transaction trails",
+                  "Service toggles and platform-level management",
+                ].map((item) => (
+                  <div key={item} className="rounded-[1.5rem] bg-secondary/70 px-5 py-4 text-sm leading-6 text-secondary-foreground">
+                    <CheckCircle2 className="mb-3 h-5 w-5 text-primary" />
+                    {item}
+                  </div>
                 ))}
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center gap-2">
-                <Layers className="w-5 h-5 text-teal-300" />
-                <h3 className="text-2xl font-heading font-bold">Services</h3>
+            <div className="surface-strong rounded-[1.5rem] p-6 sm:rounded-[2rem] sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
+                <Zap className="h-3.5 w-3.5" />
+                Faster Partner Ops
               </div>
-              <div className="mt-5 border-t border-slate-700/70 pt-4">
-                <div className="grid grid-cols-2 gap-x-6">
-                  {MARKETING_SERVICES.map((svc) => (
-                    <Link
-                      key={svc.key}
-                      to={`/services/${svc.key}`}
-                      className="py-2 text-sm text-slate-200 hover:text-white transition-colors"
-                    >
-                      {svc.title}
-                    </Link>
-                  ))}
-                </div>
+              <h3 className="mt-6 font-heading text-3xl font-black tracking-tight">
+                Ready to modernize the way your network works?
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-white/80">
+                GauryaTech gives teams a cleaner operating layer for service activation, fund movement, and daily
+                support across the distribution chain.
+              </p>
+              <div className="mt-8">
+                <Button asChild variant="secondary" size="lg" className="h-12 rounded-full bg-white px-6 text-slate-900 hover:bg-white/90 sm:h-14">
+                  <a href="#contact">
+                    Book a conversation
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </Button>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="border-t border-slate-700/70">
-          <div className="container mx-auto px-4 py-6 text-center text-sm text-slate-400">
-            (c) 2025 AbheePay. All rights reserved.
+        <section id="contact" className="container mx-auto px-4 pb-16 pt-8">
+          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="surface-panel rounded-[1.5rem] p-6 sm:rounded-[2rem] sm:p-8">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Contact</div>
+              <h2 className="mt-4 font-heading text-3xl font-black tracking-tight text-foreground">Let’s plan your rollout.</h2>
+              <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                Reach out for onboarding, pricing, deployment support, or platform demos.
+              </p>
+
+              <div className="mt-8 space-y-5">
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Call</div>
+                  <a className="mt-2 inline-block text-lg font-semibold text-foreground hover:underline" href="tel:+918860037218">
+                    +91 88600 37218
+                  </a>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Email</div>
+                  <a className="mt-2 inline-block text-lg font-semibold text-foreground hover:underline" href="mailto:care@gauryatech.com">
+                    care@gauryatech.com
+                  </a>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Office</div>
+                  <div className="mt-2 text-sm leading-7 text-foreground">
+                    2nd Floor, Plot No - 3, KH. NO. 33/6
+                    <br />
+                    Amberhai, Sector-19, Dwarka
+                    <br />
+                    New Delhi - 110043
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="surface-panel rounded-[1.5rem] p-6 sm:rounded-[2rem] sm:p-8">
+              <div className="mb-6 flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Send Query</div>
+                  <div className="mt-2 text-sm text-muted-foreground">Messages go to sales@gauryatech.com</div>
+                </div>
+                <div className="hidden rounded-full bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary sm:block">
+                  Response within 1 business day
+                </div>
+              </div>
+
+              <form onSubmit={submitContact} className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Input value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Your name" required />
+                  <Input value={contactMobile} onChange={(e) => setContactMobile(e.target.value)} placeholder="Mobile number" inputMode="tel" required />
+                </div>
+                <Input value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} placeholder="Work email" type="email" required />
+                <Textarea value={contactMessage} onChange={(e) => setContactMessage(e.target.value)} placeholder="Tell us about your network, use case, or target rollout." required rows={6} />
+
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <Button type="submit" variant="hero" size="lg" className="h-13 rounded-full px-7" disabled={contactSending}>
+                    {contactSending ? "Sending..." : "Submit inquiry"}
+                  </Button>
+                  <div className="text-xs text-muted-foreground">Secure sales and onboarding intake</div>
+                </div>
+
+                {contactError ? <div className="text-sm text-red-500">{contactError}</div> : null}
+                {contactSuccess ? <div className="text-sm text-emerald-600">{contactSuccess}</div> : null}
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-border/70 bg-card/80">
+        <div className="container mx-auto grid gap-10 px-4 py-12 lg:grid-cols-3">
+          <div>
+            <BrandMark subtitle="Digital Platform" />
+            <p className="mt-4 max-w-sm text-sm leading-7 text-muted-foreground">
+              A cleaner operational layer for partner-led fintech and digital service businesses.
+            </p>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2">
+              <Link2 className="h-5 w-5 text-primary" />
+              <h3 className="font-heading text-xl font-bold text-foreground">Navigate</h3>
+            </div>
+            <div className="mt-4 space-y-3">
+              {[
+                { label: "About", to: "/about" },
+                { label: "Privacy Policy", to: "/privacy-policy" },
+                { label: "Refund Policy", to: "/refund-policy" },
+                { label: "Terms & Conditions", to: "/terms" },
+              ].map((item) => (
+                <Link key={item.label} to={item.to} className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                  <ChevronRight className="h-4 w-4 text-primary" />
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2">
+              <Layers className="h-5 w-5 text-primary" />
+              <h3 className="font-heading text-xl font-bold text-foreground">Top Services</h3>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3">
+              {MARKETING_SERVICES.slice(0, 8).map((svc) => (
+                <Link key={svc.key} to={`/services/${svc.key}`} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                  {svc.title}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </footer>

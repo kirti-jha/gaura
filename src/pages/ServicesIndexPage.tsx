@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
 import { MARKETING_SERVICES } from "@/data/services";
 import { Button } from "@/components/ui/button";
+import BrandMark from "@/components/BrandMark";
 import usePageTitle from "@/hooks/usePageTitle";
 
 export default function ServicesIndexPage() {
-  usePageTitle("AbheePay | Services");
+  usePageTitle("GauryaTech | Services");
 
   return (
     <div className="min-h-screen bg-gradient-hero">
       <div className="container mx-auto px-4 pt-28 pb-16">
+        <div className="mb-8">
+          <Link to="/" className="inline-flex items-center">
+            <BrandMark subtitle="Service Catalogue" />
+          </Link>
+        </div>
         <div className="max-w-3xl">
           <h1 className="text-4xl sm:text-5xl font-heading font-bold text-foreground">
             Services

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import BrandMark from "@/components/BrandMark";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Zap, Eye, EyeOff } from "lucide-react";
@@ -9,7 +10,7 @@ import { apiFetch, setAuthSession } from "@/services/api";
 import usePageTitle from "@/hooks/usePageTitle";
 
 export default function SignupPage() {
-  usePageTitle("AbheePay | Sign Up");
+  usePageTitle("GauryaTech | Sign Up");
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -46,13 +47,9 @@ export default function SignupPage() {
       <div className="w-full max-w-md relative">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center mb-4">
-            <img
-              src="https://pos.abheepay.com/assets/FORMAT-PNG-Lj3U1uY2.png"
-              alt="ABHEEPAY"
-              className="h-14 w-auto"
-            />
+            <BrandMark subtitle="Partner Onboarding" />
           </Link>
-          <p className="text-muted-foreground text-sm">Create your Abheepay account</p>
+          <p className="text-muted-foreground text-sm">Create your GauryaTech account</p>
         </div>
 
         <form onSubmit={handleSignup} className="rounded-2xl bg-gradient-card border border-border p-8 space-y-5 shadow-elevated">

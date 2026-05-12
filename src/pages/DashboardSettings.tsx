@@ -203,8 +203,8 @@ export default function SettingsPage() {
 
           <div className="rounded-xl bg-gradient-card border border-border p-6 space-y-4">
             <div className="flex items-center gap-2 mb-2"><Globe className="w-5 h-5 text-primary" /><h2 className="font-heading font-semibold text-foreground">Platform Info</h2></div>
-            <div><Label>Platform Name</Label><Input defaultValue="Abheepay" className="bg-secondary/50 mt-1" /></div>
-            <div><Label>Support Email</Label><Input defaultValue="support@abheepay.com" className="bg-secondary/50 mt-1" /></div>
+            <div><Label>Platform Name</Label><Input defaultValue="GauryaTech" className="bg-secondary/50 mt-1" /></div>
+            <div><Label>Support Email</Label><Input defaultValue="support@gauryatech.com" className="bg-secondary/50 mt-1" /></div>
             <div><Label>Support Phone</Label><Input defaultValue="+91 1800-XXX-XXXX" className="bg-secondary/50 mt-1" /></div>
             <div><Label>GST Number</Label><Input defaultValue="27AABCU9603R1ZM" className="bg-secondary/50 mt-1" /></div>
             <Button className="bg-gradient-primary text-primary-foreground font-semibold"><Save className="w-4 h-4 mr-1" /> Save Changes</Button>

@@ -1,9 +1,9 @@
 export const ABOUT_ABHEEPAY = {
-  heading: "About AbheePay",
+  heading: "About GauryaTech",
   subheading: "Powering Digital Finance for Modern Indian Businesses",
   paragraphs: [
-    "AbheePay is a technology-driven fintech and digital financial services company delivering secure, scalable, and compliance-ready solutions across India.",
-    "Designed to serve merchants, MSMEs, enterprises, partners, and consumers, AbheePay combines robust financial infrastructure with innovation-led technology to simplify transactions and enable sustainable business growth.",
+    "GauryaTech is a technology-driven fintech and digital financial services company delivering secure, scalable, and compliance-ready solutions across India.",
+    "Designed to serve merchants, MSMEs, enterprises, partners, and consumers, GauryaTech combines robust financial infrastructure with innovation-led technology to simplify transactions and enable sustainable business growth.",
   ],
   highlights: [
     "Secure & Scalable Payment Solutions",

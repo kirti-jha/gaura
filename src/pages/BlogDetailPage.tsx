@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { BLOG_POSTS, getBlogPost, getRelatedBlogPosts } from "@/data/blogs";
 import { Button } from "@/components/ui/button";
+import BrandMark from "@/components/BrandMark";
 import usePageTitle from "@/hooks/usePageTitle";
 
 export default function BlogDetailPage() {
@@ -9,7 +10,7 @@ export default function BlogDetailPage() {
 
   if (!post) return <Navigate to="/blogs" replace />;
 
-  usePageTitle(`AbheePay | ${post.title}`);
+  usePageTitle(`GauryaTech | ${post.title}`);
 
   const related = getRelatedBlogPosts(post);
 
@@ -18,11 +19,7 @@ export default function BlogDetailPage() {
       <div className="container mx-auto px-4 pt-28 pb-16">
         <div className="flex items-center justify-between gap-4">
           <Link to="/" className="inline-flex items-center">
-            <img
-              src="https://pos.abheepay.com/assets/FORMAT-PNG-Lj3U1uY2.png"
-              alt="ABHEEPAY"
-              className="h-12 w-auto"
-            />
+            <BrandMark subtitle="Insights & Updates" />
           </Link>
           <div className="flex items-center gap-3">
             <Link to="/blogs">
@@ -44,13 +41,13 @@ export default function BlogDetailPage() {
               <img src={post.img} alt={post.title} className="w-full h-64 sm:h-80 object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                <div className="inline-flex items-center rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs text-white">
+                <div className="inline-flex items-center rounded-full border border-border bg-background/90 px-3 py-1 text-xs text-foreground shadow-card">
                   {post.tag}
                 </div>
-                <h1 className="mt-3 text-2xl sm:text-4xl font-heading font-bold text-white leading-tight">
+                <h1 className="mt-3 text-2xl sm:text-4xl font-heading font-bold text-foreground leading-tight">
                   {post.title}
                 </h1>
-                <div className="mt-3 text-sm text-white/80">
+                <div className="mt-3 text-sm text-foreground/80">
                   {post.author} • {post.date} • {post.time} • {post.comments} comments
                 </div>
               </div>

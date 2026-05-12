@@ -81,7 +81,7 @@ app.use("/api/public", publicServiceInfoRoutes);
 app.use("/api/public", publicContactRoutes);
 
 app.listen(PORT, () => {
-  console.log(`✅ AbheePay backend running on http://localhost:${PORT}`);
+  console.log(`GauryaTech backend running on http://localhost:${PORT}`);
 });
 
 export default app;

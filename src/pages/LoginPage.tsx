@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, Eye, EyeOff, KeyRound, Loader2, LogIn, Mail, ShieldCheck, Sparkles } from "lucide-react";
+
+import BrandMark from "@/components/BrandMark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Zap, Eye, EyeOff, LogIn, ArrowLeft, KeyRound, ShieldCheck, Mail, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch, setAuthSession } from "@/services/api";
 import usePageTitle from "@/hooks/usePageTitle";
 
 type ForgotStep = "idle" | "identity" | "otp" | "new_password" | "done";
 
+const loginHighlights = [
+  "Admin-grade partner controls",
+  "Wallet, KYC, and service operations",
+  "Built for fast daily execution",
+];
+
 export default function LoginPage() {
-  usePageTitle("AbheePay | Login");
+  usePageTitle("GauryaTech | Login");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +29,6 @@ export default function LoginPage() {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
 
-  // Forgot password state
   const [forgotStep, setForgotStep] = useState<ForgotStep>("idle");
   const [fpEmail, setFpEmail] = useState("");
   const [fpAadhaarLast4, setFpAadhaarLast4] = useState("");
@@ -69,7 +76,6 @@ export default function LoginPage() {
         body: JSON.stringify({ action: "verify_identity", email: fpEmail, aadhaar_last4: fpAadhaarLast4 }),
       });
       if (res.error) throw new Error(res.error);
-      // For demo, show OTP hint
       if (res?._demo_otp) setFpDemoOtp(res._demo_otp);
       toast({ title: "OTP Sent", description: res?.otp_hint || "Check your registered email for OTP." });
       setForgotStep("otp");
@@ -140,140 +146,140 @@ export default function LoginPage() {
     setFpDemoOtp("");
   };
 
+  const forgotCardClass = "surface-panel rounded-[1.5rem] p-6 shadow-elevated sm:rounded-[2rem] sm:p-8";
+
   const renderForgotPassword = () => {
     if (forgotStep === "identity") {
       return (
-        <form onSubmit={handleVerifyIdentity} className="rounded-2xl bg-gradient-card border border-border p-8 space-y-5 shadow-elevated">
-          <div className="text-center mb-2">
-            <ShieldCheck className="w-10 h-10 text-primary mx-auto mb-2" />
-            <h2 className="font-heading text-lg font-bold text-foreground">Verify Identity</h2>
-            <p className="text-xs text-muted-foreground mt-1">Enter your registered email and Aadhaar details</p>
+        <form onSubmit={handleVerifyIdentity} className={forgotCardClass}>
+          <ShieldCheck className="h-10 w-10 text-primary" />
+          <h2 className="mt-5 font-heading text-2xl font-black tracking-tight text-foreground">Verify identity</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter your registered email and the last 4 digits of your Aadhaar number.</p>
+          <div className="mt-6 space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fp-email">Registered Email</Label>
+              <Input id="fp-email" type="email" placeholder="you@example.com" value={fpEmail} onChange={(e) => setFpEmail(e.target.value)} required className="h-12 rounded-xl bg-background/70" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="fp-aadhaar">Last 4 Digits of Aadhaar Number</Label>
+              <Input
+                id="fp-aadhaar"
+                type="text"
+                placeholder="1234"
+                maxLength={4}
+                value={fpAadhaarLast4}
+                onChange={(e) => setFpAadhaarLast4(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                required
+                className="h-12 rounded-xl bg-background/70"
+              />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="fp-email">Registered Email</Label>
-            <Input
-              id="fp-email" type="email" placeholder="you@example.com"
-              value={fpEmail} onChange={(e) => setFpEmail(e.target.value)}
-              required className="bg-secondary/50"
-            />
+          <div className="mt-6 space-y-3">
+            <Button type="submit" className="h-12 w-full rounded-xl bg-gradient-primary text-primary-foreground" disabled={fpLoading}>
+              <Mail className="mr-2 h-4 w-4" />
+              {fpLoading ? "Verifying..." : "Send OTP"}
+            </Button>
+            <button type="button" onClick={resetForgotState} className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
+              <ArrowLeft className="h-4 w-4" />
+              Back to login
+            </button>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="fp-aadhaar">Last 4 Digits of Aadhaar Number</Label>
-            <Input
-              id="fp-aadhaar" type="text" placeholder="e.g. 1234" maxLength={4}
-              value={fpAadhaarLast4}
-              onChange={(e) => setFpAadhaarLast4(e.target.value.replace(/\D/g, "").slice(0, 4))}
-              required className="bg-secondary/50"
-            />
-            <p className="text-[10px] text-muted-foreground">The Aadhaar number registered with your account</p>
-          </div>
-          <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground font-semibold" disabled={fpLoading}>
-            <Mail className="w-4 h-4 mr-2" />
-            {fpLoading ? "Verifying..." : "Send OTP"}
-          </Button>
-          <button type="button" onClick={resetForgotState} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mx-auto">
-            <ArrowLeft className="w-3 h-3" /> Back to Login
-          </button>
         </form>
       );
     }
 
     if (forgotStep === "otp") {
       return (
-        <form onSubmit={handleVerifyOtp} className="rounded-2xl bg-gradient-card border border-border p-8 space-y-5 shadow-elevated">
-          <div className="text-center mb-2">
-            <KeyRound className="w-10 h-10 text-primary mx-auto mb-2" />
-            <h2 className="font-heading text-lg font-bold text-foreground">Enter OTP</h2>
-            <p className="text-xs text-muted-foreground mt-1">
-              A 6-digit OTP has been sent to {fpEmail.replace(/(.{2})(.*)(@.*)/, "$1***$3")}
-            </p>
-          </div>
-          {fpDemoOtp && (
-            <div className="p-3 rounded-lg border border-dashed border-primary/30 bg-primary/5 text-xs text-center">
-              <span className="text-muted-foreground">Demo OTP: </span>
-              <span className="font-mono font-bold text-foreground text-sm">{fpDemoOtp}</span>
+        <form onSubmit={handleVerifyOtp} className={forgotCardClass}>
+          <KeyRound className="h-10 w-10 text-primary" />
+          <h2 className="mt-5 font-heading text-2xl font-black tracking-tight text-foreground">Enter OTP</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            A 6-digit OTP has been sent to {fpEmail.replace(/(.{2})(.*)(@.*)/, "$1***$3")}
+          </p>
+          {fpDemoOtp ? (
+            <div className="mt-5 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-foreground">
+              Demo OTP: <span className="font-mono font-bold">{fpDemoOtp}</span>
             </div>
-          )}
-          <div className="space-y-2">
+          ) : null}
+          <div className="mt-6 space-y-2">
             <Label htmlFor="fp-otp">6-Digit OTP</Label>
             <Input
-              id="fp-otp" type="text" placeholder="000000" maxLength={6}
+              id="fp-otp"
+              type="text"
+              placeholder="000000"
+              maxLength={6}
               value={fpOtp}
               onChange={(e) => setFpOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              required className="bg-secondary/50 text-center text-lg tracking-[0.5em] font-mono"
+              required
+              className="h-14 rounded-xl bg-background/70 text-center font-mono text-lg tracking-[0.45em]"
             />
           </div>
-          <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground font-semibold" disabled={fpLoading || fpOtp.length !== 6}>
-            {fpLoading ? "Verifying..." : "Verify OTP"}
-          </Button>
-          <button type="button" onClick={() => setForgotStep("identity")} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mx-auto">
-            <ArrowLeft className="w-3 h-3" /> Back
-          </button>
+          <div className="mt-6 space-y-3">
+            <Button type="submit" className="h-12 w-full rounded-xl bg-gradient-primary text-primary-foreground" disabled={fpLoading || fpOtp.length !== 6}>
+              {fpLoading ? "Verifying..." : "Verify OTP"}
+            </Button>
+            <button type="button" onClick={() => setForgotStep("identity")} className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+          </div>
         </form>
       );
     }
 
     if (forgotStep === "new_password") {
       return (
-        <form onSubmit={handleResetPassword} className="rounded-2xl bg-gradient-card border border-border p-8 space-y-5 shadow-elevated">
-          <div className="text-center mb-2">
-            <KeyRound className="w-10 h-10 text-primary mx-auto mb-2" />
-            <h2 className="font-heading text-lg font-bold text-foreground">Set New Password</h2>
-            <p className="text-xs text-muted-foreground mt-1">Choose a strong new password for your account</p>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="fp-new">New Password</Label>
-            <div className="relative">
-              <Input
-                id="fp-new" type={fpShowNew ? "text" : "password"} placeholder="••••••••"
-                value={fpNewPassword} onChange={(e) => setFpNewPassword(e.target.value)}
-                required minLength={6} className="bg-secondary/50 pr-10"
-              />
-              <button type="button" onClick={() => setFpShowNew(!fpShowNew)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                {fpShowNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+        <form onSubmit={handleResetPassword} className={forgotCardClass}>
+          <KeyRound className="h-10 w-10 text-primary" />
+          <h2 className="mt-5 font-heading text-2xl font-black tracking-tight text-foreground">Set new password</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">Choose a secure password to restore account access.</p>
+          <div className="mt-6 space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fp-new">New Password</Label>
+              <div className="relative">
+                <Input id="fp-new" type={fpShowNew ? "text" : "password"} value={fpNewPassword} onChange={(e) => setFpNewPassword(e.target.value)} required minLength={6} className="h-12 rounded-xl bg-background/70 pr-10" />
+                <button type="button" onClick={() => setFpShowNew(!fpShowNew)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  {fpShowNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
-            {fpNewPassword && fpNewPassword.length < 6 && (
-              <p className="text-xs text-destructive">Must be at least 6 characters</p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="fp-confirm">Confirm New Password</Label>
-            <div className="relative">
-              <Input
-                id="fp-confirm" type={fpShowConfirm ? "text" : "password"} placeholder="••••••••"
-                value={fpConfirmPassword} onChange={(e) => setFpConfirmPassword(e.target.value)}
-                required className="bg-secondary/50 pr-10"
-              />
-              <button type="button" onClick={() => setFpShowConfirm(!fpShowConfirm)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                {fpShowConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+            <div className="space-y-2">
+              <Label htmlFor="fp-confirm">Confirm New Password</Label>
+              <div className="relative">
+                <Input id="fp-confirm" type={fpShowConfirm ? "text" : "password"} value={fpConfirmPassword} onChange={(e) => setFpConfirmPassword(e.target.value)} required className="h-12 rounded-xl bg-background/70 pr-10" />
+                <button type="button" onClick={() => setFpShowConfirm(!fpShowConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  {fpShowConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
-            {fpConfirmPassword && fpNewPassword !== fpConfirmPassword && (
-              <p className="text-xs text-destructive">Passwords do not match</p>
-            )}
           </div>
-          <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground font-semibold"
-            disabled={fpLoading || fpNewPassword.length < 6 || fpNewPassword !== fpConfirmPassword}>
-            {fpLoading ? "Resetting..." : "Reset Password"}
-          </Button>
+          <div className="mt-6">
+            <Button
+              type="submit"
+              className="h-12 w-full rounded-xl bg-gradient-primary text-primary-foreground"
+              disabled={fpLoading || fpNewPassword.length < 6 || fpNewPassword !== fpConfirmPassword}
+            >
+              {fpLoading ? "Resetting..." : "Reset Password"}
+            </Button>
+          </div>
         </form>
       );
     }
 
     if (forgotStep === "done") {
       return (
-        <div className="rounded-2xl bg-gradient-card border border-border p-8 space-y-5 shadow-elevated text-center">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-            <ShieldCheck className="w-8 h-8 text-primary" />
+        <div className={forgotCardClass}>
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <ShieldCheck className="h-8 w-8 text-primary" />
           </div>
-          <h2 className="font-heading text-lg font-bold text-foreground">Password Reset Successful!</h2>
-          <p className="text-sm text-muted-foreground">You can now login with your new password.</p>
-          <Button onClick={resetForgotState} className="w-full bg-gradient-primary text-primary-foreground font-semibold">
-            <LogIn className="w-4 h-4 mr-2" /> Back to Login
-          </Button>
+          <h2 className="mt-5 font-heading text-2xl font-black tracking-tight text-foreground">Password reset successful</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">You can now return to the sign-in screen and log in with your new password.</p>
+          <div className="mt-6">
+            <Button onClick={resetForgotState} className="h-12 w-full rounded-xl bg-gradient-primary text-primary-foreground">
+              <LogIn className="mr-2 h-4 w-4" />
+              Back to Login
+            </Button>
+          </div>
         </div>
       );
     }
@@ -282,125 +288,124 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4 relative overflow-hidden">
-      {/* 1. Grid & Mesh Layer */}
-      <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
-      <div className="absolute inset-0 bg-mesh pointer-events-none" />
-      
-      {/* 2. Parallax Floating Elements */}
-      <div className="absolute top-[10%] left-[5%] w-64 h-64 bg-primary/20 rounded-full blur-[100px] animate-blob pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[5%] w-80 h-80 bg-accent/20 rounded-full blur-[120px] animate-blob pointer-events-none animation-delay-2000" />
-      <div className="absolute top-[40%] right-[15%] w-32 h-32 bg-primary/10 rounded-full blur-[60px] animate-blob pointer-events-none animation-delay-4000" />
-      
-      {/* 3. Small Sharp Particles */}
-      <div className="absolute top-[20%] left-[20%] w-3 h-3 bg-primary/40 rounded-full blur-sm animate-float" />
-      <div className="absolute bottom-[30%] right-[25%] w-2 h-2 bg-accent/40 rounded-full blur-sm animate-float animation-delay-2000" />
-      <div className="absolute top-[60%] left-[40%] w-4 h-4 bg-primary/20 rounded-full blur-sm animate-float animation-delay-4000" />
+    <div className="min-h-screen overflow-hidden bg-background">
+      <div className="fixed inset-0 -z-10 bg-gradient-hero" />
+      <div className="fixed inset-0 -z-10 bg-grid opacity-40" />
+      <div className="fixed left-[-10%] top-[-10%] -z-10 h-[32rem] w-[32rem] rounded-full bg-primary/10 blur-3xl" />
+      <div className="fixed bottom-[-15%] right-[-12%] -z-10 h-[26rem] w-[26rem] rounded-full bg-accent/80 blur-3xl" />
 
-      <div className="bg-gradient-glow fixed inset-0 pointer-events-none" />
-      
-      <div className="w-full max-w-md relative z-10">
-        {/* Logo & Header with entry animation */}
-        <div className="text-center mb-10 animate-in fade-in slide-in-from-top-10 duration-1000">
-          <Link to="/" className="inline-flex items-center mb-6 animate-float">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-primary/30 blur-2xl group-hover:bg-primary/50 transition-all rounded-full" />
-              <img
-                src="https://pos.abheepay.com/assets/FORMAT-PNG-Lj3U1uY2.png"
-                alt="ABHEEPAY"
-                className="h-20 w-auto relative z-10 drop-shadow-[0_0_15px_rgba(187,85,53,0.5)]"
-              />
+      <div className="mx-auto grid min-h-screen max-w-7xl items-center gap-6 px-4 py-6 sm:py-8 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
+        <section className="surface-strong hidden min-h-[42rem] rounded-[2.5rem] p-10 lg:flex lg:flex-col lg:justify-between">
+          <div>
+            <BrandMark subtitle="Partner Control Layer" className="[&_*]:text-white" />
+            <div className="mt-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+              <Sparkles className="h-3.5 w-3.5" />
+              Redesigned For Fast Operations
             </div>
-          </Link>
-          <h2 className="text-3xl font-heading font-black text-foreground tracking-tighter sm:text-4xl text-gradient-primary">
-            {forgotStep === "idle" ? "AbheePay" : "Reset Access"}
-          </h2>
-          <p className="text-muted-foreground text-sm mt-3 font-medium tracking-wide uppercase opacity-80">
-            {forgotStep === "idle" ? "Secure Partner Portal" : "Identity Verification"}
-          </p>
-        </div>
-
-        {forgotStep !== "idle" ? (
-          <div className="animate-in fade-in zoom-in-95 duration-500">
-            {renderForgotPassword()}
+            <h1 className="mt-6 font-heading text-5xl font-black leading-[0.95] tracking-[-0.04em] text-white">
+              A sharper way to run your fintech network.
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-8 text-white/80">
+              Sign into a calmer workspace for service operations, downline management, wallet movement, and support.
+            </p>
           </div>
-        ) : (
-          <form onSubmit={handleLogin} className="glass-premium rounded-3xl border border-white/10 p-8 sm:p-10 space-y-8 shadow-elevated relative overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-1000">
-            {/* Inner Glow */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 blur-3xl pointer-events-none" />
-            
-            <div className="space-y-6">
-              {/* Field 1: Email */}
-              <div className="space-y-2 animate-in fade-in slide-in-from-left-5 duration-700 delay-100">
-                <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] ml-1 opacity-60">
-                  Identification / Email
-                </Label>
-                <div className="relative group">
-                  <Input
-                    id="email" type="email" placeholder="partner@abheepay.com"
-                    value={email} onChange={(e) => setEmail(e.target.value)}
-                    required className="bg-white/[0.03] border-white/5 h-12 rounded-xl focus:bg-white/[0.07] focus:border-primary/50 transition-all duration-300 placeholder:opacity-30"
-                  />
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary group-focus-within:w-full transition-all duration-500" />
-                </div>
+
+          <div className="space-y-4">
+            {loginHighlights.map((item) => (
+              <div key={item} className="flex items-center gap-3 rounded-[1.5rem] border border-white/12 bg-white/10 px-5 py-4 text-sm text-white/90">
+                <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-300" />
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-xl">
+          <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+            <Link to="/" className="inline-flex items-center">
+              <BrandMark subtitle="Secure Login" />
+            </Link>
+            <Link to="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              Back to website
+            </Link>
+          </div>
+
+          {forgotStep !== "idle" ? (
+            renderForgotPassword()
+          ) : (
+            <div className="surface-panel rounded-[1.5rem] p-6 shadow-elevated sm:rounded-[2.25rem] sm:p-10">
+              <div className="rounded-[1.5rem] bg-secondary/60 p-5">
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Secure Partner Portal</div>
+                <h2 className="mt-3 font-heading text-2xl font-black tracking-tight text-foreground sm:text-3xl">Welcome back</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Use your account credentials to enter the GauryaTech operations dashboard.
+                </p>
               </div>
 
-              {/* Field 2: Password */}
-              <div className="space-y-2 animate-in fade-in slide-in-from-left-5 duration-700 delay-200">
-                <div className="flex items-center justify-between ml-1">
-                  <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">
-                    Security Key
+              <form onSubmit={handleLogin} className="mt-8 space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+                    Email
                   </Label>
-                  <button
-                    type="button"
-                    onClick={() => setForgotStep("identity")}
-                    className="text-[10px] text-primary hover:text-white font-bold uppercase tracking-wider transition-colors"
-                  >
-                    Recover?
-                  </button>
-                </div>
-                <div className="relative group">
                   <Input
-                    id="password" type={showPassword ? "text" : "password"} placeholder="••••••••••••"
-                    value={password} onChange={(e) => setPassword(e.target.value)}
-                    required className="bg-white/[0.03] border-white/5 h-12 rounded-xl pr-12 focus:bg-white/[0.07] focus:border-primary/50 transition-all duration-300 placeholder:opacity-30"
+                    id="email"
+                    type="email"
+                    placeholder="partner@gauryatech.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="h-14 rounded-2xl bg-background/70"
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors">
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary group-focus-within:w-full transition-all duration-500" />
                 </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="password" className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+                      Password
+                    </Label>
+                    <button type="button" onClick={() => setForgotStep("identity")} className="text-xs font-semibold text-primary transition-colors hover:text-primary/80">
+                      Recover access
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="h-14 rounded-2xl bg-background/70 pr-12"
+                    />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground">
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <Button type="submit" className="h-14 w-full rounded-2xl bg-gradient-primary text-base font-bold text-primary-foreground shadow-glow" disabled={loading}>
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Authenticating...
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2 h-5 w-5" />
+                      Enter Dashboard
+                    </>
+                  )}
+                </Button>
+              </form>
+
+              <div className="mt-8 border-t border-border pt-6 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Restricted access system
+                <br />
+                © 2026 GauryaTech Digital Solutions
               </div>
             </div>
-
-            {/* Submit Button */}
-            <div className="animate-in fade-in slide-in-from-bottom-5 duration-700 delay-300">
-              <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground font-black h-14 rounded-2xl shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all relative overflow-hidden group/btn" disabled={loading}>
-                <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-                {loading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-                    Authenticating...
-                  </>
-                ) : (
-                  <>
-                    <LogIn className="w-5 h-5 mr-3 group-hover/btn:translate-x-1 transition-transform" />
-                    Authorized Sign In
-                  </>
-                )}
-              </Button>
-            </div>
-            
-            {/* Footer */}
-            <div className="pt-6 border-t border-white/5 animate-in fade-in duration-1000 delay-400">
-              <p className="text-center text-[10px] text-muted-foreground leading-relaxed font-medium uppercase tracking-widest opacity-40">
-                Restricted Access System<br />
-                © 2026 ABHEEPAY DIGITAL SOLUTIONS
-              </p>
-            </div>
-          </form>
-        )}
+          )}
+        </section>
       </div>
     </div>
   );
